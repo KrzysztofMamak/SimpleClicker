@@ -20,7 +20,7 @@ public class ItemArray {
         deaths = 0;
         points = 0;
         wait = 0;
-        speed = 14;
+        speed = 15;
         time = 0;
     }
 
@@ -42,7 +42,7 @@ public class ItemArray {
     // Check if the game need to change speed, check and change coordinates
     public void checkItems() {
 
-        if (time == 300) {
+        if (time == 150) {
             speed++;
             time = 0;
         }
