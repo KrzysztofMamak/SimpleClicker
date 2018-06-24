@@ -3,37 +3,38 @@ package example.mamak.simpleclicker;
 import android.view.View;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemArray {
 
-    private List<ImageView> itemArray = new ArrayList<>();
-    private int deaths;
-    private int points;
-    private int wait;
-    private int speed;
-    private int time;
+    private List<ImageView> mItemArray;
+    private int[] mImageArray;
+    private int mDeaths;
+    private int mPoints;
+    private int mWait;
+    private int mSpeed;
+    private int mTime;
 
-    public ItemArray(List<ImageView> list) {
-        itemArray = list;
-        deaths = 0;
-        points = 0;
-        wait = 0;
-        speed = 15;
-        time = 0;
+    public ItemArray(List<ImageView> list, int[] imageArray) {
+        mItemArray = list;
+        this.mImageArray = imageArray;
+        mDeaths = 0;
+        mPoints = 0;
+        mWait = 0;
+        mSpeed = 15;
+        mTime = 0;
     }
 
     // Make items invisible and set "onClicks"
     public void setUp() {
-        for (final ImageView item : itemArray) {
+        for (final ImageView item : mItemArray) {
             item.setVisibility(View.INVISIBLE);
 
             item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     item.setVisibility(View.INVISIBLE);
-                    points++;
+                    mPoints++;
                 }
             });
         }
@@ -42,34 +43,34 @@ public class ItemArray {
     // Check if the game need to change speed, check and change coordinates
     public void checkItems() {
 
-        if (time == 150) {
-            speed++;
-            time = 0;
+        if (mTime == 150) {
+            mSpeed++;
+            mTime = 0;
         }
 
-        for (ImageView item : itemArray) {
+        for (ImageView item : mItemArray) {
 
             if (item.getVisibility() == View.VISIBLE) {
                 if (item.getY() <= -item.getHeight()) {
                     item.setVisibility(View.INVISIBLE);
-                    deaths++;
+                    mDeaths++;
                 } else {
-                    item.setY(item.getY() - speed);
+                    item.setY(item.getY() - mSpeed);
                 }
             }
         }
-        time++;
+        mTime++;
     }
 
     // Restart item
     public void restart(int width, int height) {
-        for (ImageView item : itemArray) {
-            if (wait <= 0 && item.getVisibility() == View.INVISIBLE) {
+        for (ImageView item : mItemArray) {
+            if (mWait <= 0 && item.getVisibility() == View.INVISIBLE) {
                 setProperties(item, width, height);
-                wait = (int) ((Math.random() * 8) + 7);
+                mWait = (int) ((Math.random() * 8) + 7);
             }
         }
-        wait--;
+        mWait--;
     }
 
     // Prepare item to start
@@ -81,44 +82,44 @@ public class ItemArray {
         int i = (int) (Math.random() * 10);
         switch (i) {
             case 0:
-                item.setImageResource(R.drawable.fish1);
+                item.setImageResource(mImageArray[0]);
                 break;
             case 1:
-                item.setImageResource(R.drawable.fish1r);
+                item.setImageResource(mImageArray[1]);
                 break;
             case 2:
-                item.setImageResource(R.drawable.fish2);
+                item.setImageResource(mImageArray[2]);
                 break;
             case 3:
-                item.setImageResource(R.drawable.fish2r);
+                item.setImageResource(mImageArray[3]);
                 break;
             case 4:
-                item.setImageResource(R.drawable.fish3);
+                item.setImageResource(mImageArray[4]);
                 break;
             case 5:
-                item.setImageResource(R.drawable.fish3r);
+                item.setImageResource(mImageArray[5]);
                 break;
             case 6:
-                item.setImageResource(R.drawable.fish4);
+                item.setImageResource(mImageArray[6]);
                 break;
             case 7:
-                item.setImageResource(R.drawable.fish4r);
+                item.setImageResource(mImageArray[7]);
                 break;
             case 8:
-                item.setImageResource(R.drawable.fish5);
+                item.setImageResource(mImageArray[8]);
                 break;
             case 9:
-                item.setImageResource(R.drawable.fish5r);
+                item.setImageResource(mImageArray[9]);
                 break;
         }
         item.setX((float) Math.random() * (width - item.getWidth()));
     }
 
     public int getPoints() {
-        return points;
+        return mPoints;
     }
 
     public int getDeaths() {
-        return deaths;
+        return mDeaths;
     }
 }

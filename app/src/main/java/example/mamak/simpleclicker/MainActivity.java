@@ -10,12 +10,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
-    SharedPreferences top;
+    SharedPreferences mTopScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // SharedPreferences for top score
-        top = getSharedPreferences("BEST", 0);
-        final SharedPreferences.Editor editor = top.edit();
+        mTopScore = getSharedPreferences("BEST", 0);
+        final SharedPreferences.Editor editor = mTopScore.edit();
 
-        TextView topView = (TextView) findViewById(R.id.topView);
-        final TextView scoreView = (TextView) findViewById(R.id.scoreView);
+        TextView mTopView = (TextView) findViewById(R.id.top_text_view);
+        final TextView mScoreView = (TextView) findViewById(R.id.score_text_view);
 
         //coordinates
         Display display = getWindowManager().getDefaultDisplay();
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         final int height = size.y;
 
         final ItemArray itemArray;
-
         ImageView item1 = (ImageView) findViewById(R.id.item1);
         ImageView item2 = (ImageView) findViewById(R.id.item2);
         ImageView item3 = (ImageView) findViewById(R.id.item3);
@@ -50,21 +48,23 @@ public class MainActivity extends AppCompatActivity {
         ImageView item9 = (ImageView) findViewById(R.id.item9);
         ImageView item10 = (ImageView) findViewById(R.id.item10);
 
-        List<ImageView> list = new ArrayList<>();
-        list.add(item1);
-        list.add(item2);
-        list.add(item3);
-        list.add(item4);
-        list.add(item5);
-        list.add(item6);
-        list.add(item7);
-        list.add(item8);
-        list.add(item9);
-        list.add(item10);
+        int[] mImageArray = new int[10];
+        mImageArray[0] = R.drawable.fish1;
+        mImageArray[1] = R.drawable.fish1r;
+        mImageArray[2] = R.drawable.fish2;
+        mImageArray[3] = R.drawable.fish2r;
+        mImageArray[4] = R.drawable.fish3;
+        mImageArray[5] = R.drawable.fish3r;
+        mImageArray[6] = R.drawable.fish4;
+        mImageArray[7] = R.drawable.fish4r;
+        mImageArray[8] = R.drawable.fish5;
+        mImageArray[9] = R.drawable.fish5r;
 
-        itemArray = new ItemArray(list);
+        itemArray = new ItemArray(Arrays.asList(item1, item2, item3, item4,
+                                                item5, item6, item7, item8,
+                                                item9, item10), mImageArray);
         itemArray.setUp();
-        topView.setText("Top: " + top.getInt("top", 0));
+        mTopView.setText("Top: " + mTopScore.getInt("top", 0));
 
         final Handler handler = new Handler();
 
@@ -74,14 +74,14 @@ public class MainActivity extends AppCompatActivity {
 
                 // Save top score if necessary
                 if (itemArray.getDeaths() >= 5) {
-                    if (itemArray.getPoints() > top.getInt("top", 0)) {
+                    if (itemArray.getPoints() > mTopScore.getInt("top", 0)) {
                         editor.putInt("top", itemArray.getPoints());
                         editor.apply();
                     }
                     finish();
                 }
 
-                scoreView.setText("Score: " + itemArray.getPoints());
+                mScoreView.setText("Score: " + itemArray.getPoints());
 
                 itemArray.checkItems();
                 itemArray.restart(width, height);
